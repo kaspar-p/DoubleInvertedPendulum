@@ -1,2 +1,36 @@
-# DoubleInvertedPendulum
-The code that is currently being improved, found on kasparpoland.com
+# Double Inverted Pendulum Genetic Learning Simulation
+Forewarning, the lib folder is not mine. It is a neural network library created by Dan Shiffman, a creator and founder of Processing.org.
+
+This writeup is copy-and-pasted DIRECTLY from my website, kasparpoland.com.
+You can visit it and go to the Double Inverted Pendulum section to read it alongside the simulation
+
+## How do I use the program?
+Well, you watch it. The slider at the bottom controls how fast you want the simulation to go. Far left is one tick per frame, far right is 200 ticks per frame. I suggest 80, since too much really does lag a laptop. My desktop at home runs 200 fine, however, so if that suits you, go for it! Other than that, there is no interaction. Think of it as a science experiment!
+
+## What does this program actually do?
+Well, put simply, it learns. Each cartpole (each little cart attached to a pole) is its own thing, and has a brain. That brain is a neural network, and it is set randomly in the beginning. The point of this program is for them to learn how to stand up and stay up for as long as possible. This is done with a genetic algorithm in combination with a neural network, to create something called neuroevolution. It sounds fancy and it kind of is, but the effect is really cool to watch.
+
+## How does that work and what do those words mean?
+Calculus, to put it simply. I should do a little introductory paragraph about neural networks, but I won't. Not my place. Essentially dummy AI, and there are many many places you can get better info than here.
+
+Back to my program. The algorithm starts every generation of cartpoles with a population of 500. There are bounds to how far their poles can go down before they are classified as dead and removed from the simulation. Every frame, the remaining cartpoles gain +1 score. This has to do with the fitness function, which I will address later. This keeps going, until they all die. The BEST cartpole (evalutated through the fitness function) is then chosen to be the father of his people. (I laughed when writing that). From its specific characteristics, the new generation of 500 cartpoles are born, all based upon their father, but with a 10% mutation rate (another piece of jargon I'll get to later). This makes them slightly different so that they have the chance to improve. This process goes on and on until one succeeds, and he is crowned the best of Balance Land!
+
+There is a little more that goes on behind the scenes, though. How does the cartpole balance? What is a fitness function? What are mutation rates?
+
+Mutation rate is essentially a function. It takes a number, and changes it by what is called a normed value. The image below is a normal distribution of values over an interval.
+
+Imagine the number passed into the mutation function is at the very crest. If the mutation happens (a 10% chance), then a number is chosen from this normal distribution. This number is more likely to be closer to the number passed in than farther away, and we get a desired edging towards victory effect. If you know AI, its like a hack for gradient descent. It's like genetic's cheat to be like "please AI notice me I'm inefficient but I try". This mutation function, when used on a child's characteristics, causes it to be slightly different than its parent, which sometimes makes them fail harder and other times, succeed. The mutation function ends up being used within the brain of the cartpole to change the outcome of each decision it makes. The weights, specifically, for AI people.
+
+Another term: fitness function. This one gets complicated for other AI, but is really simple for this one. Essentially for AI to succeed, we need to quantify success. The fitness function is a function that takes in any amount of inputs, and spits one one SCALAR QUANTITY (a number). This number is usually made to be the higher the better. The trick is finding the right function. Mine is really simple. The cartpoles that lasted the longest are obviously better, so my fitness function IS each cartpoles score value. If a cartpole is bad, it will fall fast, and have one of maybe 50, and if it lasts for 10,000 ticks, then it is good, and it should have a greater fitness value than its bad cartpole friend.
+
+Now to the really good stuff: how does the cartpole actually balance? Well, that requires me to talk about its brain. Its brain is a neural network, with 6 input neurons, 2 hidden layers with 25 nodes each, and an output layer with 3 neurons.
+
+If that made no sense to you, don't worry about it. The only important part to non AI people is the 3 output neurons. Essentially, the neural networks take INPUTS, does calculations (remember the calculus up there), and spits out numbers in each of the 3 neurons. So every time our cartpole makes a decision, we get THREE numbers, one for each neuron. Okay, that make sense? No? Alright lets keep movin'. At every frame, the cartpole makes a decision. It sends to its brain six things: its position, its velocity, the first pole's angle, the first pole's angular velocity, the SECOND pole's angle, and the second pole's angular velocity. Essentially, it's data that says "where am I am right now". It uses this, does some number crunching, and spits out three numbers. In no order, the numbers each mean something. The first number means How much force do I want to put into my next movement on a scale of 0 to 1 (0 being no force, 1 being lots of force). The second and third numbers are just binary. They compare against each other and whichever is highest is the direction that force is applied. For example, if the numbers are 1 1 0, then lots of force is applied to the left, but at 0.4 0.2 0.3, there is a medium amount of force applied to the right. At every frame, the cartpole makes this decision. This force is applied into the physics equations, and the cycle begins again.
+
+In essence, that's all there is to it. They learn. They end up learning how to stand at an average (not tested or measured, only noticed) at generation 1400. Because it is based on random chance (as all genetic algorithms are), the lowest generation I've seen them learn at is 565, and the highest is ~14,000.
+
+## Where is this project going?
+Right now, nowhere, but hopefully in the future, somewhere. When I finished this version of the program I immediately had the coolest idea to make it better. I wanted the pendulum to learn to succeed with 1 joint on top, and once it hit some arbitrary point of success, say, a score of 10,000, it would get another joint added onto the end. This would be really interesting to learn if the skills would carry over. I imagine they would, and would simply refine to the point of perfection, but who knows. This ended up never being finished, as THERE WAS SO MUCH MATH. I'm still working on understanding the functionals, partial derivatives, multi-variate functions, and taking numerical derivatives of all of it. The problem arises when calculating the physics formulas for each different number of links, but I talk more about that in the pendulum page. It really is cool stuff. Point is, taking numeric derivatives is hard when solving for lots of unknown variables (accelerations the angles of each "pole"). I do hope someday I come back and am able to do it. Would be dope.
+
+## That's it...
+Hope you learned something or at least thought it was interesting... This might be the only project I do this long of a writeup for, but that's only because I LOVED working on this. 10/10 would problem solve again.
