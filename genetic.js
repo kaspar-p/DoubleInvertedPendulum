@@ -10,18 +10,7 @@ function makeNewGeneration() {
 	//after the controller array is empty, since they all died, we need new ones
 	controllers = generateNew(savedControllers);
 
-	//before I had code that looked like:
-	//savedControllers = controllers;
-	//this is a problem because it referenced the same data, so
-	//anything that changes with the controller array, SUCH AS BEING DELETED
-	//also deleted from the savedControllers array
-	//this is pretty much saying that at the beginning of each generation
-	//we need to redo our savedControllers array, like we do in setup()
-	for (let i = 0; i < controllers.length; i++) {
-		savedControllers[i] = controllers[i];
-	}
-
-	//console.log("All time best's score: " + bestController.score);
+	savedControllers = controllers.slice();
 }
 
 //returns an array of newly created controllers
@@ -76,17 +65,12 @@ function mutate(x) {
 
 function normalizeFitness(list) {
 	// Make score exponentially better?
-	for (let i = 0; i < list.length; i++) {
-		list[i].score = pow(list[i].score, 2);
-	}
+	list.map(item => item.score = item.score * item.score);
 
 	// Add up all the scores
 	let sum = 0;
-	for (let i = 0; i < list.length; i++) {
-		sum += list[i].score;
-	}
+	list.forEach(item => sum += item.score);
+
 	// Divide by the sum
-	for (let i = 0; i < list.length; i++) {
-		list[i].fitness = list[i].score / sum;
-	}
+	list.forEach(item => item.fitness = item.score / sum);
 }

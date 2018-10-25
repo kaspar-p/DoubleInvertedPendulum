@@ -1,7 +1,7 @@
-//AP project, made by Kaspar Poland
-//This was done in April, 2018
-//Eveything here, save the p5.js files and lib folder was programmed by me
-
+// AP project, made by Kaspar Poland
+// This was done in April, 2018
+// EDIT: REUPDATED October, 2018
+// Eveything here, save the p5.js files and lib folder was programmed by me
 
 let controllers = [];
 let savedControllers = [];
